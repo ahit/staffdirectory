@@ -1,24 +1,27 @@
 body{
     font-family: sans-serif;
-    font-size: x-small;
+    font-size: small;
 }
 table{
     border-collapse: true;
-    border-width: 1px;
+    border-width: 10px;
     border-color: black;
     background-color: rgb(200,200,200);
 }
 td{
     color: rgb(110,110,110);
     background-color: rgb(240,240,240);
-    border-width:1px;
-    border-color:black;
-    margin: 0px;
+    border-width:10px;
+    border-color:rgb(200,200,200);
+    border-style: solid;
+    padding: 5px;
     width: 110px;
-
+    font-size: x-small;
+    text-align: center;
 }
 
 a{
+    font-size: x-small;
     text-decoration:none;
     color: rgb(100,50,120);
 }
