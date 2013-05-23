@@ -1,0 +1,25 @@
+body{
+    font-family: sans-serif;
+    font-size: x-small;
+}
+table{
+    border-collapse: true;
+    border-width: 1px;
+    border-color: black;
+    background-color: rgb(200,200,200);
+}
+td{
+    color: rgb(110,110,110);
+    background-color: rgb(240,240,240);
+    border-width:1px;
+    border-color:black;
+    margin: 0px;
+    width: 110px;
+
+}
+
+a{
+    text-decoration:none;
+    color: rgb(100,50,120);
+}
+a:hover{text-decoration: underline;}
