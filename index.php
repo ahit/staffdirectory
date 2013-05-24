@@ -11,10 +11,10 @@ Show only:
 <a href = "index.php">Everyone</a>
 <table>
 <?php
-require_once("/google-api-php-client/src/Google_Client.php");
-require_once("/google-api-php-client/src/contrib/Google_PlusService.php");
-require_once '/google-api-php-client/src/cache/Google_Cache.php';
-require_once '/google-api-php-client/src/cache/Google_FileCache.php';
+require_once("../google-api-php-client/src/Google_Client.php");
+require_once("../google-api-php-client/src/contrib/Google_PlusService.php");
+require_once '../google-api-php-client/src/cache/Google_Cache.php';
+require_once '../google-api-php-client/src/cache/Google_FileCache.php';
 
 $API_KEY = "AIzaSyCImBgkm97rEIbZM1ESvueMrBsOxKDdUw0";
 $client = new Google_Client();
