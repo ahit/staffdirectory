@@ -1,7 +1,11 @@
 <html>
 <head>
     <link rel="stylesheet" href="styles.css">
+    <title>Asian Hope Staff - Who's Who</title>
 </head>
+<div style="float:left; width: 150px;">
+<img src = "http://it.asianhope.org/images/ah.png">
+</div>
 <table>
 <?php
 require_once("../google-api-php-client/src/Google_Client.php");
