@@ -11,6 +11,8 @@ Show only:
 <a href = "index.php">Everyone</a>
 <table>
 <?php
+$API_KEY = "AIzaSyCImBgkm97rEIbZM1ESvueMrBsOxKDdUw0";
+
 if(!empty($_GET['show']))
     $show = $_GET['show'];
 else
@@ -29,7 +31,7 @@ while(($data = fgetcsv($fh))!=false){
     $name = $data[0];
     $uid= $data[1];
     $site = "Logos";
-
+    $url = "https://www.googleapis.com/plus/v1/people/$uid?key=$API_KEY";
     if(is_null($show) || (strcmp($site,$show) ==0)){
 
     $url = "https://plus.google.com/u/0/".$uid;
@@ -37,16 +39,28 @@ while(($data = fgetcsv($fh))!=false){
 
     if($cols==0) echo "<tr>";
     if(strcmp($uid,"null")!=0){
+        $person = json_decode(file_get_contents("https://www.googleapis.com/plus/v1/people/$uid?key=$API_KEY"),true);
+        foreach ($person['organizations'] as $orgi){ $org = $orgi['name']; $title = $orgi['title'];}
+
         echo "<td>
-                <a href = \"$url\">
-                <img src =\"$img\" onerror=\"this.src='nogoogle.jpg';\">
-                <br/>
-                $name</a>
+                 <a href = \"$url\">
+                 <div class = \"photo\">
+                     <img src =\"$img\" onerror=\"this.src='nogoogle.jpg';\">
+                 </div>
+                 <div class = \"info\"><strong>$name</strong><br/>$title</div></a>
             </td>";
+        $org = "";
+        $title = "";
     }
 
     if(strcmp($uid,"null")==0){
-        echo "<td><img src = \"nogoogleaccount.jpg\"><br/>$name</td>";
+        echo "<td>
+                 <a href = \"$url\">
+                 <div class = \"photo\">
+                 <img src =\"$img\" onerror=\"this.src='nogoogleaccount.jpg';\">
+                 </div>
+                 <div class = \"info\"><strong>$name</strong><br/>$title</div></a>
+            </td>";
     }
 
     if($cols==($lim-1)) echo "</tr>";
