@@ -15,9 +15,13 @@ if(!empty($_GET['show']))
     $show = $_GET['show'];
 else
     $show = null;
+if(!empty($_GET['lim']))
+    $lim = $_GET['lim'];
+else
+    $lim = 6;
+
 $fh = fopen("staff.csv","r");
 $cols = 0;
-$lim = 4;
 $img_size = 120;
 $img_url;
 
@@ -42,13 +46,14 @@ while(($data = fgetcsv($fh))!=false){
     }
 
     if(strcmp($uid,"null")==0){
-        echo "<td><img src = \"nogoogle.jpg\"><br/>$name</td>";
+        echo "<td><img src = \"nogoogleaccount.jpg\"><br/>$name</td>";
     }
 
     if($cols==($lim-1)) echo "</tr>";
     $cols++;$cols%=$lim;
     }
 }
+fclose($fh);
 ?>
 </table>
 </html>
