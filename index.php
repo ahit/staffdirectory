@@ -2,13 +2,6 @@
 <head>
     <link rel="stylesheet" href="styles.css">
 </head>
-Show only:
-<a href = "index.php?show=Logos">Logos</a>
-<a href = "index.php?show=AHIS">AHIS</a>
-<a href = "index.php?show=Admin">Admin</a>
-<a href = "index.php?show=V&O">V&O</a>
-<a href = "index.php?show=KCIS">KCIS</a>
-<a href = "index.php">Everyone</a>
 <table>
 <?php
 require_once("../google-api-php-client/src/Google_Client.php");
@@ -16,9 +9,9 @@ require_once("../google-api-php-client/src/contrib/Google_PlusService.php");
 require_once '../google-api-php-client/src/cache/Google_Cache.php';
 require_once '../google-api-php-client/src/cache/Google_FileCache.php';
 
-$API_KEY = "AIzaSyCImBgkm97rEIbZM1ESvueMrBsOxKDdUw0";
+//$API_KEY = "AIzaSyCImBgkm97rEIbZM1ESvueMrBsOxKDdUw0";
 $client = new Google_Client();
-$client->setDeveloperKey($API_KEY);
+//$client->setDeveloperKey($API_KEY);
 $plus = new Google_PlusService($client);
 
 $cache = new Google_FileCache();
@@ -65,7 +58,7 @@ while(($data = fgetcsv($fh))!=false){
 		if(!empty($me['organizations'])){
 			foreach($me['organizations'] as $org){
 				if(!empty($org['title']))
-					if(strcmp($org['title'],"Asian Hope") == 0)$title = $title." ".$org['title'];
+					 $title=$org['title'];
 				}
 		}
 
@@ -87,5 +80,10 @@ while(($data = fgetcsv($fh))!=false){
 	$cols++;$cols%=$lim;
 
 }
+fclose($fh);
 
 ?>
+</tr>
+</table>
+</body>
+</html>
