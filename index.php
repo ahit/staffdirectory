@@ -11,63 +11,81 @@ Show only:
 <a href = "index.php">Everyone</a>
 <table>
 <?php
+require_once("../gplus-quickstart-php/google-api-php-client/src/Google_Client.php");
+require_once("../gplus-quickstart-php/google-api-php-client/src/contrib/Google_PlusService.php");
+require_once '../gplus-quickstart-php/google-api-php-client/src/cache/Google_Cache.php';
+require_once '../gplus-quickstart-php/google-api-php-client/src/cache/Google_FileCache.php';
+
 $API_KEY = "AIzaSyCImBgkm97rEIbZM1ESvueMrBsOxKDdUw0";
+$client = new Google_Client();
+$client->setDeveloperKey($API_KEY);
+$plus = new Google_PlusService($client);
+
+$cache = new Google_FileCache();
+$cache_time = 43200; // 12 hours
 
 if(!empty($_GET['show']))
-    $show = $_GET['show'];
+	$show = $_GET['show'];
 else
-    $show = null;
+	$show = null;
 if(!empty($_GET['lim']))
-    $lim = $_GET['lim'];
+	$lim = $_GET['lim'];
 else
-    $lim = 6;
+	$lim = 6;
+
 
 $fh = fopen("staff.csv","r");
 $cols = 0;
 $img_size = 120;
 $img_url;
+$title="";
 
 while(($data = fgetcsv($fh))!=false){
-    $name = $data[0];
-    $uid= $data[1];
-    $site = "Logos";
-    $url = "https://www.googleapis.com/plus/v1/people/$uid?key=$API_KEY";
-    if(is_null($show) || (strcmp($site,$show) ==0)){
+	if($cols==0) echo "<tr>";
 
-    $url = "https://plus.google.com/u/0/".$uid;
-    $img="https://www.google.com/s2/photos/profile/$uid?sz=$img_size\"";
+	$person = $data['1'];
+	$name = $data['0']; //fallback if they don't have Google+
+	//assuming they have a Google+ ID
+	if(strcmp($person,"null")!=0){
 
-    if($cols==0) echo "<tr>";
-    if(strcmp($uid,"null")!=0){
-        $person = json_decode(file_get_contents("https://www.googleapis.com/plus/v1/people/$uid?key=$API_KEY"),true);
-        foreach ($person['organizations'] as $orgi){ $org = $orgi['name']; $title = $orgi['title'];}
+		$img="https://www.google.com/s2/photos/profile/$person?sz=$img_size\"";
 
-        echo "<td>
-                 <a href = \"$url\">
-                 <div class = \"photo\">
-                     <img src =\"$img\" onerror=\"this.src='nogoogle.jpg';\">
-                 </div>
-                 <div class = \"info\"><strong>$name</strong><br/>$title</div></a>
-            </td>";
-        $org = "";
-        $title = "";
-    }
+		//grab info about people
+		if($cache->get($person,$cache_time)){
+		    $me = $cache->get($person);
+		    $file_status = "cache";
+		}
+		else{
+		    $me = $plus->people->get($person);
+		    $cache->set($person,$me);
+		    $file_status = "live";
+		}
 
-    if(strcmp($uid,"null")==0){
-        echo "<td>
-                 <a href = \"$url\">
-                 <div class = \"photo\">
-                 <img src =\"$img\" onerror=\"this.src='nogoogleaccount.jpg';\">
-                 </div>
-                 <div class = \"info\"><strong>$name</strong><br/>$title</div></a>
-            </td>";
-    }
+		//make a best effort at determining their title
+		if(!empty($me['organizations'])){
+			foreach($me['organizations'] as $org){
+				if(!empty($org['title']))
+					if(strcmp($org['title'],"Asian Hope") == 0)$title = $title." ".$org['title'];
+				}
+		}
 
-    if($cols==($lim-1)) echo "</tr>";
-    $cols++;$cols%=$lim;
-    }
+		//output their cards
+		echo "<td>
+		<a href = \"{$me['url']}\">
+		<img src =\"$img\" onerror=\"this.src='nogoogle.jpg';\">
+		<br/><br/>
+		{$me['displayName']}<br/>$title</a>
+		</td>";
+
+		$title = "";
+	}
+	elseif(strcmp($person,"null")==0){
+		echo "<td><img src = \"nogoogleaccount.jpg\"><br/><br/>$name</td>";
+	}
+
+	if($cols==($lim-1)) echo "</tr>";
+	$cols++;$cols%=$lim;
+
 }
-fclose($fh);
+
 ?>
-</table>
-</html>

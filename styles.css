@@ -10,28 +10,19 @@ table{
 }
 td{
     color: rgb(110,110,110);
-    background-color: white;
-    border-width:1px;
+    background-color: rgb(240,240,240);
+    border-width:10px;
     border-color:rgb(200,200,200);
     border-style: solid;
     padding: 5px;
-    width: 300px;
-    font-size: normal;
-    text-align:center;
+    width: 110px;
+    font-size: x-small;
+    text-align: center;
 }
 
 a{
+    font-size: x-small;
     text-decoration:none;
-    color:black;
+    color: rgb(100,50,120);
 }
 a:hover{text-decoration: underline;}
-
-.photo{
-    float:right;
-
-}
-.info{
-    padding-top: 20px;
-    text-align:left;
-
-}
