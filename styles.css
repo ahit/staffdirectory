@@ -4,8 +4,9 @@ body{
 }
 table{
     border-collapse: true;
-    border-width: 10px;
-    border-color: black;
+    border-width: 1px;
+    border-color: rgb(150,150,150);
+    border-style: solid;
     background-color: rgb(200,200,200);
     margin: auto;
 }
