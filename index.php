@@ -63,6 +63,7 @@ while(($data = fgetcsv($fh))!=false){
 			foreach($me['organizations'] as $org){
 				if(!empty($org['title']))
 					 $title=$org['title'];
+					if(strcmp($org['name'],"Asian Hope")==0) break;
 				}
 		}
 
